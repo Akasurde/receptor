@@ -70,27 +70,27 @@ func Execute() {
 
 			switch {
 			case cfgPath == "" && cfgStr == "":
-				return fmt.Errorf("specify the node configuration eith with -c or -f")
+				return fmt.Errorf("specify the node configuration either with -c or -f")
 			case cfgPath != "" && cfgStr != "":
 				return fmt.Errorf("set only one of -c and -f")
 			case cfgStr != "":
 				buf := bytes.NewBuffer([]byte(cfgStr))
 				if err := v.ReadConfig(buf); err != nil {
-					return fmt.Errorf("given config ist invalid: %w", err)
+					return fmt.Errorf("given config is not invalid: %w", err)
 				}
 			case cfgPath == "-":
 				if err := v.ReadConfig(os.Stdin); err != nil {
-					return fmt.Errorf("could not read serve config file from stdin: %w", err)
+					return fmt.Errorf("could not read server config file from stdin: %w", err)
 				}
 			default:
 				v.SetConfigFile(cfgPath)
 				if err := v.ReadInConfig(); err != nil {
-					return fmt.Errorf("could not read serve config file: %w", err)
+					return fmt.Errorf("could not read server config file: %w", err)
 				}
 			}
 
 			if err := v.UnmarshalExact(&cfg); err != nil {
-				return fmt.Errorf("could not unmarshal serve config file: %w", err)
+				return fmt.Errorf("could not unmarshal server config file: %w", err)
 			}
 
 			// TODO replace with signal.NotifyContext when switching to go 1.16.
